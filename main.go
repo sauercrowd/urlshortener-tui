@@ -10,15 +10,8 @@ import(
 	"io/ioutil"
 )
 
-type song struct {
-	artist   string
-	album    string
-	track    string
-	duration time.Duration
-}
-
 type hitRow struct{
-	hits,url,key  *tui.Entry
+	hits,url  *tui.Entry
 
 }
 
@@ -30,15 +23,13 @@ func main(){
 	hits.AppendRow(
 		tui.NewLabel("HITS"),
 		tui.NewLabel("URL"),
-		tui.NewLabel("KEY"),
 	)
 	rows := make([]hitRow, 10)
 	for i:=0;i < 10;i++{
-		r := hitRow{tui.NewEntry(),tui.NewEntry(),tui.NewEntry()}
+		r := hitRow{tui.NewEntry(),tui.NewEntry()}
 		r.hits.SetSizePolicy(tui.Minimum,tui.Expanding)
-		r.key.SetSizePolicy(tui.Minimum,tui.Expanding)
 		r.url.SetSizePolicy(tui.Minimum,tui.Expanding)
-		hits.AppendRow(r.hits,r.key,r.url)
+		hits.AppendRow(r.hits,r.url)
 		rows[i] = r
 	}
 	hits.SetSizePolicy(tui.Minimum,tui.Expanding)
@@ -79,7 +70,6 @@ func loop(rows []hitRow, ui tui.UI){
 
 		for i, h := range hits{
 			rows[i].hits.SetText(fmt.Sprint(h.Hits))
-			rows[i].key.SetText(fmt.Sprint(h.Key))
 			rows[i].url.SetText(fmt.Sprint(h.Target))
 		}
 		ui.Update(func(){})
